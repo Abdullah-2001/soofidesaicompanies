@@ -1,99 +1,155 @@
 import { useEffect, useState } from 'react';
-import { Menu, X, Building2 } from 'lucide-react';
-
-const links = [
-  { label: 'About', href: '#about' },
-  { label: 'Leadership', href: '#leadership' },
-  { label: 'Services', href: '#services' },
-  { label: 'Approach', href: '#approach' },
-  { label: 'Future', href: '#future' },
-  { label: 'Insights', href: '#insights' },
-];
+import { Menu, X, ArrowUpRight, Phone } from 'lucide-react';
+import { NAV_LINKS, COMPANY } from '@/data/content';
+import { useScrolled } from '@/hooks/useScrolled';
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const scrolled = useScrolled(40);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState('#home');
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const sections = NAV_LINKS.map((l) =>
+      document.querySelector<HTMLElement>(l.href),
+    ).filter(Boolean) as HTMLElement[];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(`#${e.target.id}`);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
+  const close = () => setOpen(false);
+
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? 'glass border-b border-ink-200/70 shadow-sm' : 'bg-transparent'
-      }`}
-    >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <a href="#top" className="group flex items-center gap-2.5">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-600 to-brand-400 text-white shadow-lg shadow-brand-500/30 transition-transform duration-300 group-hover:scale-105">
-            <Building2 className="h-5 w-5" />
-          </span>
-          <span className="font-display text-base font-800 leading-tight tracking-tight text-ink-900">
-            Soofi Desai<span className="block text-[10px] font-600 tracking-wide text-brand-600">COMPANIES</span>
-          </span>
-        </a>
-
-        <ul className="hidden items-center gap-7 lg:flex">
-          {links.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                className="group relative text-sm font-500 text-ink-600 transition-colors hover:text-brand-700"
-              >
-                {l.label}
-                <span className="absolute -bottom-1.5 left-0 h-0.5 w-0 rounded-full bg-brand-500 transition-all duration-300 group-hover:w-full" />
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <div className="hidden lg:block">
-          <a
-            href="#contact"
-            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-brand-600 px-5 py-2.5 text-sm font-600 text-white shadow-lg shadow-brand-500/30 transition-all duration-300 hover:bg-brand-700 hover:shadow-brand-500/40"
-          >
-            <span className="relative z-10">Get in touch</span>
-            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-          </a>
-        </div>
-
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-10 items-center justify-center rounded-xl text-ink-700 transition-colors hover:bg-ink-100 lg:hidden"
-          aria-label="Toggle menu"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </nav>
-
+    <header className="fixed inset-x-0 top-0 z-50">
       <div
-        className={`overflow-hidden border-t border-ink-200/60 bg-white/95 backdrop-blur transition-all duration-400 lg:hidden ${
-          open ? 'max-h-[28rem] opacity-100' : 'max-h-0 opacity-0'
+        className={`transition-all duration-500 ${
+          scrolled
+            ? 'glass border-b border-brand-100/70 shadow-soft'
+            : 'bg-transparent'
         }`}
       >
-        <ul className="flex flex-col gap-1 px-6 py-4">
-          {links.map((l) => (
-            <li key={l.href}>
+        <nav className="container-x flex h-16 items-center justify-between lg:h-20">
+          {/* Logo */}
+          <a
+            href="#home"
+            onClick={close}
+            className="group flex items-center gap-2.5"
+            aria-label={`${COMPANY.name} home`}
+          >
+            <span className="relative grid h-10 w-10 place-items-center overflow-hidden rounded-xl bg-brand-950 shadow-glow transition-transform duration-500 group-hover:scale-105">
+              <span className="absolute inset-0 border-flow opacity-30" />
+              <span className="relative font-serif text-lg font-bold text-white">
+                SD
+              </span>
+            </span>
+            <span className="hidden flex-col leading-none sm:flex">
+              <span className="text-[15px] font-bold tracking-tight text-ink">
+                Soofi Desai
+              </span>
+              <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-brand-600">
+                Companies
+              </span>
+            </span>
+          </a>
+
+          {/* Desktop links */}
+          <ul className="hidden items-center gap-1 xl:flex">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className={`relative rounded-full px-3.5 py-2 text-sm font-medium transition-colors duration-300 ${
+                    active === link.href
+                      ? 'text-brand-700'
+                      : 'text-slatey hover:text-brand-700'
+                  }`}
+                >
+                  {link.label}
+                  <span
+                    className={`absolute inset-x-3.5 -bottom-px h-px origin-left bg-brand-600 transition-transform duration-300 ${
+                      active === link.href ? 'scale-x-100' : 'scale-x-0'
+                    }`}
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex items-center gap-3">
+            <a
+              href={COMPANY.phoneHref}
+              className="hidden items-center gap-2 text-sm font-medium text-slatey transition-colors hover:text-brand-700 lg:flex"
+            >
+              <Phone className="h-4 w-4 text-brand-500" />
+              {COMPANY.phone}
+            </a>
+            <a href="#contact" className="btn-primary hidden lg:inline-flex">
+              Get in Touch
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+
+            {/* Mobile toggle */}
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className="grid h-11 w-11 place-items-center rounded-xl border border-brand-100 bg-white/80 text-ink transition hover:bg-brand-50 xl:hidden"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+            >
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      {/* Mobile drawer */}
+      <div
+        className={`fixed inset-0 top-16 z-40 origin-top bg-white/95 backdrop-blur-xl transition-all duration-400 xl:hidden ${
+          open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+        }`}
+      >
+        <ul className="container-x flex flex-col gap-1 py-8">
+          {NAV_LINKS.map((link, i) => (
+            <li
+              key={link.href}
+              style={{ transitionDelay: open ? `${i * 45}ms` : '0ms' }}
+              className={`transform transition-all duration-500 ${
+                open ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
+              }`}
+            >
               <a
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="block rounded-xl px-4 py-3 text-base font-500 text-ink-700 transition-colors hover:bg-brand-50 hover:text-brand-700"
+                href={link.href}
+                onClick={close}
+                className={`flex items-center justify-between rounded-2xl px-5 py-4 text-lg font-medium transition-colors ${
+                  active === link.href
+                    ? 'bg-brand-50 text-brand-700'
+                    : 'text-ink hover:bg-brand-50/60'
+                }`}
               >
-                {l.label}
+                {link.label}
+                <ArrowUpRight className="h-5 w-5 text-brand-500" />
               </a>
             </li>
           ))}
-          <li>
-            <a
-              href="#contact"
-              onClick={() => setOpen(false)}
-              className="mt-2 block rounded-xl bg-brand-600 px-4 py-3 text-center text-base font-600 text-white"
-            >
-              Get in touch
+          <li className="mt-4">
+            <a href="#contact" onClick={close} className="btn-primary w-full">
+              Get in Touch
+              <ArrowUpRight className="h-4 w-4" />
             </a>
           </li>
         </ul>

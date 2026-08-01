@@ -1,18 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
-interface Options {
-  start?: number;
-  duration?: number;
-  decimals?: number;
-  suffix?: string;
-  prefix?: string;
-}
-
-/** Animates a number from `start` to `value` when the element scrolls into view. */
-export function useCountUp(value: number, options: Options = {}) {
-  const { start = 0, duration = 1800, decimals = 0, suffix = '', prefix = '' } = options;
-  const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState(start);
+/** Animates a number from 0 to `target` once the element scrolls into view. */
+export function useCountUp(target: number, duration = 1600) {
+  const [value, setValue] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
   const started = useRef(false);
 
   useEffect(() => {
@@ -22,13 +13,13 @@ export function useCountUp(value: number, options: Options = {}) {
     const run = () => {
       if (started.current) return;
       started.current = true;
-      const t0 = performance.now();
+      const start = performance.now();
       const tick = (now: number) => {
-        const p = Math.min((now - t0) / duration, 1);
+        const p = Math.min((now - start) / duration, 1);
+        // easeOutCubic
         const eased = 1 - Math.pow(1 - p, 3);
-        setDisplay(start + (value - start) * eased);
+        setValue(Math.round(eased * target));
         if (p < 1) requestAnimationFrame(tick);
-        else setDisplay(value);
       };
       requestAnimationFrame(tick);
     };
@@ -43,12 +34,7 @@ export function useCountUp(value: number, options: Options = {}) {
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [value, start, duration]);
+  }, [target, duration]);
 
-  const formatted = display.toLocaleString('en-US', {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  });
-
-  return { ref, text: `${prefix}${formatted}${suffix}` };
+  return { value, ref };
 }

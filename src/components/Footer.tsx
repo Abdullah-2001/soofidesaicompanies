@@ -1,60 +1,55 @@
-import { Building2, MapPin, Phone, Mail, Globe, ArrowUpRight } from 'lucide-react';
-
-const quickLinks = [
-  { label: 'Home', href: '#top' },
-  { label: 'About Us', href: '#about' },
-  { label: 'Leadership', href: '#leadership' },
-  { label: 'Services', href: '#services' },
-  { label: 'Our Approach', href: '#approach' },
-  { label: 'Future Businesses', href: '#future' },
-  { label: 'Contact', href: '#contact' },
-];
-
-const serviceLinks = [
-  'Financial & Tax Consultancy',
-  'Corporate & Business Registration',
-  'SRB & Regulatory Services',
-  'Educational Consultancy',
-  'Travel Consultancy',
-  'Business & Management Consultancy',
-];
+import { ArrowUp, Mail, Phone, Globe, MapPin } from 'lucide-react';
+import { COMPANY, NAV_LINKS } from '@/data/content';
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-ink-900 text-ink-300">
-      <div className="pointer-events-none absolute inset-0 grid-pattern opacity-10" />
-      <div className="pointer-events-none absolute -left-20 top-0 h-72 w-72 rounded-full bg-brand-600/20 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-0 h-72 w-72 rounded-full bg-brand-500/10 blur-3xl" />
+    <footer className="relative overflow-hidden bg-ink text-white">
+      <div className="pointer-events-none absolute inset-0 opacity-[0.05] dot-pattern" />
+      <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-brand-600/15 blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-4">
-          {/* Brand */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-400 text-white shadow-lg shadow-brand-500/30">
-                <Building2 className="h-5 w-5" />
+      {/* top */}
+      <div className="container-x relative py-16">
+        <div className="grid gap-12 lg:grid-cols-12">
+          {/* brand */}
+          <div className="lg:col-span-5">
+            <div className="flex items-center gap-3">
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-600 font-serif text-lg font-bold text-white shadow-glow">
+                SD
               </span>
-              <span className="font-display text-base font-800 leading-tight tracking-tight text-white">
-                Soofi Desai<span className="block text-[10px] font-600 tracking-wide text-brand-400">COMPANIES</span>
-              </span>
+              <div className="leading-tight">
+                <p className="font-serif text-lg font-bold text-white">
+                  Soofi Desai Companies
+                </p>
+                <p className="text-xs uppercase tracking-[0.18em] text-accent-300">
+                  (Private) Limited
+                </p>
+              </div>
             </div>
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-ink-400">
+
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60 text-pretty">
               A diversified professional services and business development
-              company committed to reliable consultancy and sustainable growth.
+              company building a strong foundation for future growth across
+              multiple sectors.
             </p>
-            <p className="mt-4 text-xs font-600 uppercase tracking-wider text-brand-400">
-              Sustainability · Development · Commitment
-            </p>
+
+            <div className="mt-6 inline-flex flex-wrap items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent-300">
+              Sustainability <span className="text-white/30">|</span>{' '}
+              Development <span className="text-white/30">|</span> Commitment
+            </div>
           </div>
 
-          {/* Quick links */}
-          <div>
-            <h4 className="text-sm font-700 uppercase tracking-wider text-white">Quick Links</h4>
-            <ul className="mt-4 space-y-3">
-              {quickLinks.map((l) => (
-                <li key={l.label}>
-                  <a href={l.href} className="group inline-flex items-center text-sm text-ink-400 transition-colors hover:text-brand-400">
-                    <span className="h-px w-0 bg-brand-500 transition-all duration-300 group-hover:mr-2 group-hover:w-3" />
+          {/* quick links */}
+          <div className="lg:col-span-3">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+              Quick Links
+            </h3>
+            <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3">
+              {NAV_LINKS.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    className="text-sm text-white/60 transition-colors hover:text-accent-300"
+                  >
                     {l.label}
                   </a>
                 </li>
@@ -62,58 +57,77 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
-          <div>
-            <h4 className="text-sm font-700 uppercase tracking-wider text-white">Our Services</h4>
-            <ul className="mt-4 space-y-3">
-              {serviceLinks.map((s) => (
-                <li key={s}>
-                  <a href="#services" className="group inline-flex items-center text-sm text-ink-400 transition-colors hover:text-brand-400">
-                    <span className="h-px w-0 bg-brand-500 transition-all duration-300 group-hover:mr-2 group-hover:w-3" />
-                    {s}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="text-sm font-700 uppercase tracking-wider text-white">Contact</h4>
-            <ul className="mt-4 space-y-3.5 text-sm text-ink-400">
-              <li className="flex gap-3">
-                <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5 text-brand-400" />
-                <span>Al-Ahmed Centre, Office No. 6, Magazine Lane, Saddar, Karachi 74400, Pakistan</span>
+          {/* contact */}
+          <div className="lg:col-span-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+              Get in Touch
+            </h3>
+            <ul className="mt-5 space-y-4 text-sm text-white/60">
+              <li className="flex items-start gap-3">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent-300" />
+                <span>
+                  {COMPANY.address.map((l) => (
+                    <span key={l} className="block">
+                      {l}
+                    </span>
+                  ))}
+                </span>
               </li>
-              <li className="flex gap-3">
-                <Phone className="h-4 w-4 flex-shrink-0 text-brand-400" />
-                <span>+92 321 387 5658</span>
+              <li className="flex items-center gap-3">
+                <Phone className="h-4 w-4 shrink-0 text-accent-300" />
+                <a
+                  href={COMPANY.phoneHref}
+                  className="transition-colors hover:text-accent-300"
+                >
+                  {COMPANY.phone}
+                </a>
               </li>
-              <li className="flex gap-3">
-                <Mail className="h-4 w-4 flex-shrink-0 text-brand-400" />
-                <span>soofidesaicompanies@gmail.com</span>
+              <li className="flex items-center gap-3">
+                <Mail className="h-4 w-4 shrink-0 text-accent-300" />
+                <a
+                  href={COMPANY.emailHref}
+                  className="transition-colors hover:text-accent-300"
+                >
+                  {COMPANY.email}
+                </a>
               </li>
-              <li className="flex gap-3">
-                <Globe className="h-4 w-4 flex-shrink-0 text-brand-400" />
-                <a href="https://www.soofidesaicompanies.com" className="transition-colors hover:text-brand-400">
-                  www.soofidesaicompanies.com
+              <li className="flex items-center gap-3">
+                <Globe className="h-4 w-4 shrink-0 text-accent-300" />
+                <a
+                  href={COMPANY.websiteHref}
+                  className="transition-colors hover:text-accent-300"
+                >
+                  {COMPANY.website}
                 </a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-ink-700 pt-8 sm:flex-row">
-          <p className="text-sm text-ink-500">
-            © 2026 Soofi Desai Companies (Private) Limited. All Rights Reserved.
-          </p>
+        {/* back to top */}
+        <div className="mt-14 flex justify-center">
           <a
-            href="#top"
-            className="group inline-flex items-center gap-1.5 text-sm text-ink-400 transition-colors hover:text-brand-400"
+            href="#home"
+            className="group inline-flex flex-col items-center gap-2 text-xs font-semibold uppercase tracking-wider text-white/50 transition-colors hover:text-accent-300"
           >
+            <span className="grid h-11 w-11 place-items-center rounded-full border border-white/15 transition-all duration-400 group-hover:border-accent-400 group-hover:bg-accent-400/10">
+              <ArrowUp className="h-5 w-5" />
+            </span>
             Back to top
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5" />
           </a>
+        </div>
+      </div>
+
+      {/* bottom bar */}
+      <div className="border-t border-white/10">
+        <div className="container-x flex flex-col items-center justify-between gap-3 py-6 text-center sm:flex-row sm:text-left">
+          <p className="text-xs text-white/50">
+            &copy; 2026 Soofi Desai Companies (Private) Limited. All Rights
+            Reserved.
+          </p>
+          <p className="text-xs text-white/40">
+            Building Trust &middot; Creating Value &middot; Shaping the Future
+          </p>
         </div>
       </div>
     </footer>
