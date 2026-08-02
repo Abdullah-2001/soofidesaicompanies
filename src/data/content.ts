@@ -34,8 +34,8 @@ export const COMPANY = {
   phoneHref: 'tel:+923213875658',
   email: 'soofidesaicompanies@gmail.com',
   emailHref: 'mailto:soofidesaicompanies@gmail.com',
-  website: 'www.soofidesaicompanies.com',
-  websiteHref: 'https://www.soofidesaicompanies.com',
+  website: 'https://soofidesaicompanies.vercel.app',
+  websiteHref: 'https://soofidesaicompanies.vercel.app',
   address: [
     'Al-Ahmed Centre, Office No. 6',
     'Magazine Lane, Saddar',
